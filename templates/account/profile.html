@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Profile</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'dues:index' %}"><i class="bi bi-house-door"></i></a></li>
+          <li class="breadcrumb-item"><a href="{% url 'dues:dues_list' %}">Dues Over</a></li>
+          <li class="breadcrumb-item active">Profile</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-1"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% elif message.tags == 'error' %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-octagon me-1"></i>
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Under Construction</h4>
+        <p>Some functionalities of the User Profile are still under construction. We are working hard to complete them and appreciate your patience.</p>
+        <hr>
+        <p class="mb-0">Please check back later for updates or contact support if you have any questions.</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-4">
+          <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+              <img src="{% static 'assets/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
+              <h2>{{ user.first_name|title }} {{ user.last_name|title }}</h2>
+              <h3>{% if user.is_staff %}Staff{% else %}Member{% endif %}</h3>
+              <div class="social-links mt-2">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-8">
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>
+                </li>
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                </li>
+              </ul>
+              <div class="tab-content pt-2">
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                      <h5 class="card-title">Profile Details</h5>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Full Name</div>
+                    <div class="col-lg-9 col-md-8">{{ user.first_name|title }} {{ user.last_name|title }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Role</div>
+                    <div class="col-lg-9 col-md-8">{% if user.is_staff %}Staff{% else %}Member{% endif %}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Country</div>
+                    <div class="col-lg-9 col-md-8">Ghana</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Address</div>
+                    <div class="col-lg-9 col-md-8">Obuasi, Ashanti Region</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Phone</div>
+                    <div class="col-lg-9 col-md-8">{{ user.phone_number }}</div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Email</div>
+                    <div class="col-lg-9 col-md-8">{{ user.email }}</div>
+                  </div>
+                </div>
+
+                <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                  <!-- Profile Edit Form -->
+                  <form method="post" enctype="multipart/form-data" action="{% url 'account:profile' %}">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                      <label for="first_name" class="col-sm-2 col-form-label">First Name</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="last_name" class="col-sm-2 col-form-label">Last Name</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="phone_number" class="col-sm-2 col-form-label">Phone Number</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ user.phone_number }}" {% if user.phone_number %}readonly{% endif %} required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="email" class="col-sm-2 col-form-label">Email Address</label>
+                      <div class="col-sm-10">
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" readonly required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="formFile" class="col-sm-2 col-form-label">Profile Image</label>
+                      <div class="col-sm-10">
+                        <input class="form-control" type="file" id="formFile" {% if profile.profile_image %} value={{ profile.profile_image.name }} {% endif %} name="profile_image" disabled>
+                        
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" name="update_profile" class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-settings">
+                  <!-- Settings Form -->
+                  <form method="post" action="{% url 'account:profile' %}">
+                    {% csrf_token %}
+                    <fieldset class="row mb-3">
+                      <legend class="col-form-label col-sm-2 pt-0">Notification Type</legend>
+                      <div class="col-sm-10">
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="notification_type" id="notification_sms" value="sms" {% if profile.notification_type == 'sms' %}checked{% endif %}>
+                          <label class="form-check-label" for="notification_sms">SMS</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="notification_type" id="notification_email" value="email" {% if profile.notification_type == 'email' %}checked{% endif %}>
+                          <label class="form-check-label" for="notification_email">Email</label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="notification_type" id="notification_none" value="none" {% if profile.notification_type == 'none' %}checked{% endif %}>
+                          <label class="form-check-label" for="notification_none">None</label>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <div class="text-center">
+                      <button type="submit" name="update_notifications" class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-change-password">
+                  <!-- Change Password Form -->
+                  <form method="post" action="{% url 'account:profile' %}">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                      <label for="old_password" class="col-sm-2 col-form-label">Current Password</label>
+                      <div class="col-sm-10">
+                        <input type="password" class="form-control" id="old_password" name="old_password" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="new_password1" class="col-sm-2 col-form-label">New Password</label>
+                      <div class="col-sm-10">
+                        <input type="password" class="form-control" id="new_password1" name="new_password1" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="new_password2" class="col-sm-2 col-form-label">Confirm Password</label>
+                      <div class="col-sm-10">
+                        <input type="password" class="form-control" id="new_password2" name="new_password2" required>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" name="change_password" class="btn btn-primary">Change Password</button>
+                    </div>
+                  </form>
+                </div>
+              </div><!-- End Bordered Tabs -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}

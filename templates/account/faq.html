@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% block title %}FAQ{% endblock %}
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Frequently Asked Questions</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'dues:index' %}"><i class="bi bi-house-door"></i></a></li>
+          <li class="breadcrumb-item"><a href="{% url 'account:profile' %}">Profile</a></li>
+          <li class="breadcrumb-item active">Frequently Asked Questions</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section faq">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- F.A.Q Group 1 -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Website Information</h5>
+
+                        <div class="accordion accordion-flush" id="faq-group-1">
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-1" type="button" data-bs-toggle="collapse">
+                                        What is MADRASATUNNAASUHIYYA?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-1" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        MADRASATUNNAASUHIYYA is an educational platform dedicated to providing quality learning resources and support to students. Our mission is to foster a community of learners who are passionate about their education and personal growth.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-2" type="button" data-bs-toggle="collapse">
+                                        How can I create an account?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-2" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        Creating an account is simple. Click on the 'Sign Up' button on the homepage, fill in the required details, and follow the instructions to verify your email address. Once verified, you can log in and start exploring our resources.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-3" type="button" data-bs-toggle="collapse">
+                                        What resources are available on the platform?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-3" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        Our platform offers a wide range of resources including video lectures, interactive quizzes, downloadable study materials, and forums for discussion. We cover various subjects to cater to different educational needs.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-4" type="button" data-bs-toggle="collapse">
+                                        How can I contact support?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-4" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        If you need assistance, you can contact our support team by clicking on the 'Contact Us' link at the bottom of the page. Fill out the form with your query, and our team will get back to you as soon as possible.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" data-bs-target="#faqsOne-5" type="button" data-bs-toggle="collapse">
+                                        Can I contribute to the platform?
+                                    </button>
+                                </h2>
+                                <div id="faqsOne-5" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                                    <div class="accordion-body">
+                                        Yes, we welcome contributions from educators and experts. If you are interested in contributing, please reach out to us through the 'Contact Us' page with your details and the type of content you would like to provide.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>  
+{% endblock %}

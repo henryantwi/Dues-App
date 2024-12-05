@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static %}
+{% block title %}Make Payment{% endblock %}
+{% block content %}
+<style>
+    #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        display: none;
+    }
+
+    #loading-overlay .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        color: #fff;
+    }
+
+    #loading-overlay p {
+        color: #fff;
+        margin-top: 1rem;
+        font-size: 1.25rem;
+    }
+</style>
+
+<main id="main" class="main">
+    <!-- Page Title -->
+    <div class="pagetitle">
+        <h1>Make Payment</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dues:index' %}"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dues:dues_list' %}">Dues List</a></li>
+                <li class="breadcrumb-item active">Make Payment</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+              
+    <!-- Payment Section -->
+    <div class="p-3 p-md-5 mb-5 rounded bg-light">
+        <div class="text-center mb-4">
+            <!-- Payment Icon -->
+            <i class="bi bi-credit-card" style="font-size: 3rem; color: #007bff;"></i>
+            <h2 class="mt-3">Complete Your Payment</h2>
+            <p class="text-muted">Easily and securely pay your dues for the month.</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body">
+                        <!-- Payment Summary -->
+                        <h5 class="card-title text-center mb-4">Payment Summary</h5>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span><strong>Month:</strong> {{ dues.month|date:"F" }}</span>
+                            <span><strong>Year:</strong> {{ dues.month|date:"Y" }}</span>
+                            <span><strong>Amount:</strong> GH₵ {{ dues.amount }}</span>
+                        </div>
+                        <div class="progress mb-4">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75% Complete</div>
+                        </div>
+                        <p class="text-center">You're just one step away from completing your payment.</p>
+                        <div class="text-center">
+                            <!-- Payment Button -->
+                            <button class="btn btn-primary btn-lg" onclick="payWithPayStack()" id="pay-now">
+                                <i class="bi bi-arrow-right-circle"></i> Pay Now
+                            </button>
+                        </div>
+                        <p class="text-center text-muted mt-3">Payments are processed securely via Paystack.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Payment Section -->
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>Processing your payment, please wait...</p>
+    </div>
+</main>
+
+<!-- Include Paystack and SweetAlert2 libraries -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // Define the payWithPayStack function
+    function payWithPayStack() {
+        console.log("Button Clicked");
+
+        let currency = "GHS";
+        let plan = "";
+        let ref = "{{ payment.ref }}";
+        let obj = {
+            key: '{{ paystack_public_key }}',
+            email: '{{ user_email }}',
+            amount: '{{ amount }}',
+            ref: ref,
+            callback: function(response) {
+                // Show loading overlay
+                document.getElementById('loading-overlay').style.display = 'flex';
+                window.location.href = "{% url 'payments:verify_payment' payment.ref %}";
+
+                // Swal.fire({
+                //     icon: 'success',
+                //     title: 'Payment Successful',
+                //     text: 'Thank you! Your payment was successful.',
+                //     confirmButtonText: 'OK',
+                //     didClose: () => {
+                //         window.location.href = "{% url 'payments:verify_payment' payment.ref %}";
+                //     }
+                // });
+            },
+            onClose: function() {
+                // Swal.fire({
+                //     icon: 'error',
+                //     title: 'Transaction Cancelled',
+                //     text: 'The transaction was not completed, the window was closed.',
+                //     confirmButtonText: 'OK'
+                // });
+            }
+        };
+        if (Boolean(currency)) {
+            obj.currency = currency.toUpperCase();
+        }
+        if (Boolean(plan)) {
+            obj.plan = plan;
+        }
+        var handler = PaystackPop.setup(obj);
+        handler.openIframe();
+    }
+</script>
+{% endblock %}
