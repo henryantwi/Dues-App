@@ -22,7 +22,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_protect
 from icecream import ic
 
-from payments.tasks import send_verification_email
+from .tasks import send_verification_email
 
 from .forms import NotificationSettingsForm, ProfileUpdateForm
 from .models import CustomUser, Profile

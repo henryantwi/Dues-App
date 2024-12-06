@@ -164,19 +164,27 @@ ACCOUNT_USERNAME_BLACKLIST = [
     "webmaster",
     "dues",
 ]
-
-if ENVIRONMENT == 'production' or POSTGRES_LOCALLY is True:
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = env("EMAIL_HOST", default="smtp.gmail.com")
-    EMAIL_PORT = env("EMAIL_PORT", default=465)
-    EMAIL_USE_TLS = env("EMAIL_USE_TLS", default=False)
-    EMAIL_USE_SSL = env("EMAIL_USE_SSL", default=True)
-    EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-    DEFAULT_FROM_EMAIL = f"MadrasatuPay {EMAIL_HOST_USER}"
-    ACCOUNT_EMAIL_SUBJECT_PREFIX = ""
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env("EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = env("EMAIL_PORT", default=465)
+EMAIL_USE_TLS = env("EMAIL_USE_TLS", default=False)
+EMAIL_USE_SSL = env("EMAIL_USE_SSL", default=True)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = f"MadrasatuPay {EMAIL_HOST_USER}"
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ""
+# if ENVIRONMENT == 'production' or POSTGRES_LOCALLY is True:
+#     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+#     EMAIL_HOST = env("EMAIL_HOST", default="smtp.gmail.com")
+#     EMAIL_PORT = env("EMAIL_PORT", default=465)
+#     EMAIL_USE_TLS = env("EMAIL_USE_TLS", default=False)
+#     EMAIL_USE_SSL = env("EMAIL_USE_SSL", default=True)
+#     EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+#     EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+#     DEFAULT_FROM_EMAIL = f"MadrasatuPay {EMAIL_HOST_USER}"
+#     ACCOUNT_EMAIL_SUBJECT_PREFIX = ""
+# else:
+#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 CELERY_BROKER_URL = env('REDIS_URL')
 CELERY_RESULT_BACKEND = 'django-db'
