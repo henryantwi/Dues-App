@@ -5,6 +5,7 @@ import dj_database_url
 from environ import Env
 
 from icecream import ic
+from celery.schedules import crontab
 
 env = Env()
 Env.read_env()
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
     "admin_honeypot",
     "cloudinary_storage",
     "cloudinary",
+    'django_celery_beat',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -174,3 +177,18 @@ if ENVIRONMENT == 'production' or POSTGRES_LOCALLY is True:
     ACCOUNT_EMAIL_SUBJECT_PREFIX = ""
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+CELERY_BROKER_URL = env('REDIS_URL')
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_BEAT_SCHEDULE = {
+    'send-monthly-reminders': {
+        'task': 'payments.tasks.send_monthly_reminders',
+        'schedule': crontab(day_of_month=1, hour=0, minute=0),
+    },
+    'send-unpaid-dues-reminders': {
+        'task': 'payments.tasks.send_unpaid_dues_reminders',
+        'schedule': crontab(hour=0, minute=0),
+    },
+}

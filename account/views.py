@@ -22,6 +22,8 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_protect
 from icecream import ic
 
+from payments.tasks import send_verification_email
+
 from .forms import NotificationSettingsForm, ProfileUpdateForm
 from .models import CustomUser, Profile
 from .tokens import account_activation_token
@@ -115,6 +117,7 @@ def register_view(request: HttpRequest) -> HttpResponse:
             try:
                 email = EmailMessage(subject, message, to=[user.email])
                 email.send()
+                send_verification_email.delay(user.id, current_site.domain)
             except Exception as e:
                 user.delete()
                 messages.error(request, f"Error creating account. Please retry {e}")
