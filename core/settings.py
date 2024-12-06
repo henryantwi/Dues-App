@@ -83,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-POSTGRES_LOCALLY = True
+POSTGRES_LOCALLY = False
 
 WSGI_APPLICATION = "core.wsgi.application"
 
