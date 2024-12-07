@@ -28,7 +28,7 @@ def send_monthly_reminders():
     users = User.objects.all()
     for user in users:
         message = "This is a reminder to pay your monthly dues."
-        send_sms_get([user.phone_number], message)
+        # send_sms_get([user.phone_number], message)
         send_mail(
             "Monthly Dues Reminder", message, settings.DEFAULT_FROM_EMAIL, [user.email]
         )
@@ -46,7 +46,7 @@ def send_unpaid_dues_reminders():
             message = (
                 f"Reminder: You have unpaid dues for {due.month.strftime('%B %Y')}."
             )
-            send_sms_get([user.phone_number], message)
+            # send_sms_get([user.phone_number], message)
             send_mail(
                 "Unpaid Dues Reminder",
                 message,
