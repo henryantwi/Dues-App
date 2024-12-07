@@ -4,6 +4,8 @@ from celery import shared_task
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.core.exceptions import ObjectDoesNotExist
+from account.models import CustomUser
 
 from dues.models import Dues
 
@@ -14,13 +16,17 @@ from .sms_client import send_sms_get
 User = get_user_model()
 
 
-
-
 @shared_task
 def send_payment_notification(user_id, amount, month):
-    user = User.objects.get(id=user_id)
-    message = f"Hello {user.first_name.capitalize()}, your payment of GHS {amount} for {month} has been successfully processed."
-    send_sms_get([user.phone_number], message)
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        message = f"Hello {user.first_name.capitalize()}, your payment of GHS {amount} for {month} has been successfully processed."
+        send_sms_get([user.phone_number], message)
+    except CustomUser.DoesNotExist:
+        print(f"CustomUser with id {user_id} does not exist.")
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"CustomUser with id {user_id} does not exist.")
 
 
 @shared_task

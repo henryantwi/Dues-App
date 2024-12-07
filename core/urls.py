@@ -12,8 +12,8 @@ class CustomPasswordResetView(auth_views.PasswordResetView):
 
 
 urlpatterns = [
-    # path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
-    path("admin/", admin.site.urls),
+    path("admin/", include("admin_honeypot.urls", namespace="admin_honeypot")),
+    path("webmaster/", admin.site.urls),
     path("account/", include("account.urls")),
     path("", include("dues.urls")),
     path("payments/", include("payments.urls")),
