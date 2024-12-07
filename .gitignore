@@ -38,6 +38,7 @@ atlassian-ide-plugin.xml
 
 static/
 media/
+staticfiles/
 
 # Distribution / packaging 
 .Python build/ 
@@ -142,3 +143,5 @@ db.sqlite3
 
 #some media files
 profile_pics/
+
+dump.rdb
