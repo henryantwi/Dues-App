@@ -25,7 +25,7 @@ elif ENVIRONMENT == "production":
 
 ALLOWED_HOSTS = ["*"]
 
-DEBUG = True
+# DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -93,9 +93,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
-ic("Database:", DATABASES)
-
 
 if ENVIRONMENT == "production" or POSTGRES_LOCALLY is True:
     DATABASES["default"] = dj_database_url.parse(env("DATABASE_URL"))
